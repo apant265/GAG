@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r7ONL+0rCeI=",
+  "dgSpecHash": "Mhtk5aG8pW4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj",
+  "projectFilePath": "C:\\Users\\aidan.panter\\source\\repos\\GAG\\GAG Proc Generator.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aidan.panter\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\aidan.panter\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

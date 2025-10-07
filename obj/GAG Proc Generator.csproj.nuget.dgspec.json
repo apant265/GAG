@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj": {}
+    "C:\\Users\\aidan.panter\\source\\repos\\GAG\\GAG Proc Generator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj": {
+    "C:\\Users\\aidan.panter\\source\\repos\\GAG\\GAG Proc Generator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj",
+        "projectUniqueName": "C:\\Users\\aidan.panter\\source\\repos\\GAG\\GAG Proc Generator.csproj",
         "projectName": "GAG Proc Generator",
-        "projectPath": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj",
+        "projectPath": "C:\\Users\\aidan.panter\\source\\repos\\GAG\\GAG Proc Generator.csproj",
         "packagesPath": "C:\\Users\\aidan.panter\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\obj\\",
+        "outputPath": "C:\\Users\\aidan.panter\\source\\repos\\GAG\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\aidan.panter\\AppData\\Roaming\\NuGet\\NuGet.Config",
