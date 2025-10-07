@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAG Proc Generator", "GAG Proc Generator.csproj", "{F55F6E80-CB90-4D05-91BC-D759764FAE9C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F55F6E80-CB90-4D05-91BC-D759764FAE9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F55F6E80-CB90-4D05-91BC-D759764FAE9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F55F6E80-CB90-4D05-91BC-D759764FAE9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F55F6E80-CB90-4D05-91BC-D759764FAE9C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29EC1019-9D0B-467A-843F-9B0F863F7A25}
+	EndGlobalSection
+EndGlobal

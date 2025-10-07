@@ -1,0 +1,248 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\helpers\\sqltypehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:helpers\\sqltypehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\models\\columninfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:models\\columninfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\models\\foreignkeyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:models\\foreignkeyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|c:\\users\\aidan.panter\\source\\repos\\gag proc generator\\views\\databaseconnectiondialog.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F55F6E80-CB90-4D05-91BC-D759764FAE9C}|GAG Proc Generator.csproj|solutionrelative:views\\databaseconnectiondialog.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj.user||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:GAG Proc Generator.csproj.user||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 270,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\ViewModels\\MainViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\ViewModels\\MainViewModel.cs",
+              "RelativeToolTip": "ViewModels\\MainViewModel.cs",
+              "ViewState": "AgIAAAwBAAAAAAAAAAAIwBMBAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T20:43:12.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAIwBAAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:51:59.598Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SqlTypeHelper.cs",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Helpers\\SqlTypeHelper.cs",
+              "RelativeDocumentMoniker": "Helpers\\SqlTypeHelper.cs",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Helpers\\SqlTypeHelper.cs",
+              "RelativeToolTip": "Helpers\\SqlTypeHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:51:56.453Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ForeignKeyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Models\\ForeignKeyInfo.cs",
+              "RelativeDocumentMoniker": "Models\\ForeignKeyInfo.cs",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Models\\ForeignKeyInfo.cs",
+              "RelativeToolTip": "Models\\ForeignKeyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:51:54.365Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-07T19:46:36.133Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "AssemblyInfo.cs",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\AssemblyInfo.cs",
+              "RelativeToolTip": "AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:52:03.205Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ColumnInfo.cs",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Models\\ColumnInfo.cs",
+              "RelativeDocumentMoniker": "Models\\ColumnInfo.cs",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Models\\ColumnInfo.cs",
+              "RelativeToolTip": "Models\\ColumnInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:51:10.41Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DatabaseConnectionDialog.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Views\\DatabaseConnectionDialog.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\DatabaseConnectionDialog.xaml.cs",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\Views\\DatabaseConnectionDialog.xaml.cs",
+              "RelativeToolTip": "Views\\DatabaseConnectionDialog.xaml.cs",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAwwIgAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T19:19:04.822Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "GAG Proc Generator.csproj.user",
+              "DocumentMoniker": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj.user",
+              "RelativeDocumentMoniker": "GAG Proc Generator.csproj.user",
+              "ToolTip": "C:\\Users\\aidan.panter\\source\\repos\\GAG Proc Generator\\GAG Proc Generator.csproj.user",
+              "RelativeToolTip": "GAG Proc Generator.csproj.user",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwMAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003464|",
+              "WhenOpened": "2025-10-07T19:15:48.643Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 837,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:135:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:136:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:134:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:140:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:139:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 1067,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:137:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:138:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+<Window x:Class="GAG_Proc_Generator.Views.DatabaseConnectionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GAG_Proc_Generator.Views"
+        mc:Ignorable="d"
+        Title="Connect to SQL Server" Height="400" Width="500" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Server -->
+        <TextBlock Text="Server:" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
+        <TextBox Text="{Binding Server}" Grid.Row="0" Margin="60,0,0,5"/>
+
+        <!-- Database -->
+        <TextBlock Text="Database:" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,10,5"/>
+        <ComboBox ItemsSource="{Binding Databases}" SelectedItem="{Binding SelectedDatabase}" Grid.Row="1" Margin="60,0,0,5" IsEnabled="{Binding IsConnected}"/>
+
+        <!-- Procedures -->
+        <TextBlock Text="Existing Procedures:" Grid.Row="2" VerticalAlignment="Top" Margin="0,10,0,5"/>
+        <ListBox ItemsSource="{Binding Procedures}" Grid.Row="2" Margin="0,30,0,10" Height="80" IsEnabled="{Binding IsConnected}"/>
+
+        <!-- Status -->
+        <TextBlock Text="{Binding Status}" Grid.Row="3" Margin="0,10,0,10" FontWeight="Bold"/>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Test Connection" Command="{Binding TestConnectionCommand}" Padding="10,5" Margin="0,0,10,0"/>
+            <Button Content="Connect" Command="{Binding ConnectCommand}" Padding="10,5" Margin="0,0,10,0"/>
+            <Button Content="OK" Command="{Binding OkCommand}" Padding="10,5" Margin="0,0,10,0" IsEnabled="{Binding IsConnected}"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Padding="10,5"/>
+        </StackPanel>
+    </Grid>
+</Window>
