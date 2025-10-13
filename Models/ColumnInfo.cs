@@ -1,11 +1,21 @@
-namespace GAG_Proc_Generator.Models
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace GAG_Proc_Generator.Models;
+
+public partial class ColumnInfo : ObservableObject
 {
-    public class ColumnInfo
-    {
-        public string Name { get; set; } = string.Empty;
-        public string DataType { get; set; } = string.Empty;
-        public bool IsNullable { get; set; }
-        public bool IsPrimaryKey { get; set; }
-        public bool IsSelected { get; set; }
-    }
+    [ObservableProperty]
+    private string name = string.Empty;
+
+    [ObservableProperty]
+    private string dataType = string.Empty;
+
+    [ObservableProperty]
+    private bool isNullable;
+
+    [ObservableProperty]
+    private bool isPrimaryKey;
+
+    [ObservableProperty]
+    private bool isSelected;
 }

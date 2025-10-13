@@ -3,276 +3,190 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace=GAG_Proc_Generator"
+        xmlns:converters="clr-namespace:GAG_Proc_Generator.Converters"
         mc:Ignorable="d"
-        Title="SQL Stored Procedure Generator" Height="700" Width="1200">
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        Title="SQL Stored Procedure Generator" Height="750" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
 
-        <!-- Table Name Input -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Table Name:" VerticalAlignment="Center" Width="100"/>
-            <ComboBox ItemsSource="{Binding Tables}" SelectedItem="{Binding TableName}" Width="200" Margin="0,0,10,0"/>
-            <Button Content="Connect to Database" Command="{Binding OpenConnectionDialogCommand}" Padding="10,5" Margin="0,0,10,0"/>
-            <Button Content="Load Table" Command="{Binding LoadTableCommand}" Padding="10,5"/>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#CCCCCC"/>
+                    <Setter Property="Foreground" Value="#999999"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+
+            <GroupBox Header="🔌 Database Connection">
+                <Button Content="Connect to SQL Server"
+                        Command="{Binding OpenConnectionDialogCommand}"
+                        HorizontalAlignment="Left"/>
+            </GroupBox>
+
+            <GroupBox Header="📋 Select Table" Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox ItemsSource="{Binding Tables}"
+                              SelectedItem="{Binding TableName}"
+                              Margin="0,0,10,0"/>
+                    <Button Content="Load Table"
+                            Command="{Binding LoadTableCommand}"
+                            Grid.Column="1"/>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="📊 Table Schema" Visibility="{Binding IsTableLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <GroupBox Header="Columns" Margin="0,0,5,0">
+                        <ListView ItemsSource="{Binding Columns}" Height="200">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Select" Width="60">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
+                                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding DataType}" Width="100"/>
+                                    <GridViewColumn Header="PK" DisplayMemberBinding="{Binding IsPrimaryKey}" Width="40"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </GroupBox>
+
+                    <GroupBox Header="Foreign Keys" Grid.Column="1" Margin="5,0,0,0">
+                        <ListView ItemsSource="{Binding ForeignKeys}" Height="200">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Select" Width="60">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Column" DisplayMemberBinding="{Binding ColumnName}" Width="100"/>
+                                    <GridViewColumn Header="References" DisplayMemberBinding="{Binding ReferencedTable}" Width="120"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </GroupBox>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="📝 Header Information" Visibility="{Binding IsTableLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Initials:" Grid.Row="0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Initials, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1"/>
+
+                    <TextBlock Text="Story Number:" Grid.Row="1" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding StoryNumber, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1"/>
+
+                    <TextBlock Text="Description:" Grid.Row="2" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"/>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="⚙️ Generate Procedures" Visibility="{Binding IsHeaderInfoComplete, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel>
+                    <TextBlock Text="Standard Procedures" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                        <Button Content="GetAll" Command="{Binding GenerateGetAllCommand}"/>
+                        <Button Content="Save" Command="{Binding GenerateSaveCommand}"/>
+                        <Button Content="Delete" Command="{Binding GenerateDeleteCommand}"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Custom Procedures (Select columns above first)" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <Button Content="GetByAttributes"
+                            Command="{Binding GenerateGetByAttributesCommand}"
+                            HorizontalAlignment="Left"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="📄 Generated SQL" Visibility="{Binding IsHeaderInfoComplete, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBox Text="{Binding GeneratedSql}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto"
+                         FontFamily="Consolas"
+                         FontSize="11"
+                         Height="250"
+                         Padding="10"
+                         Margin="0"/>
+            </GroupBox>
+
         </StackPanel>
-
-        <!-- Header Information -->
-        <GroupBox Header="Header Information" Grid.Row="1" Margin="0,0,0,10">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Initials:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Initials}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,5"/>
-                <TextBlock Text="Story Number:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding StoryNumber}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,5"/>
-                <TextBlock Text="Description:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Description}" Grid.Row="2" Grid.Column="1" Margin="0,0,0,5"/>
-            </Grid>
-        </GroupBox>
-
-        <!-- Columns and FKs Display -->
-        <GroupBox Header="Table Schema" Grid.Row="2" Margin="0,0,0,10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <GroupBox Header="Columns" Grid.Column="0" Margin="0,0,5,0">
-                    <ListView ItemsSource="{Binding Columns}" Height="150">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="120"/>
-                                <GridViewColumn Header="Data Type" DisplayMemberBinding="{Binding DataType}" Width="100"/>
-                                <GridViewColumn Header="Nullable" Width="60">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding IsNullable}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Primary Key" Width="80">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding IsPrimaryKey}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </GroupBox>
-                <GroupBox Header="Foreign Keys" Grid.Column="1" Margin="5,0,0,0">
-                    <ListView ItemsSource="{Binding ForeignKeys}" Height="150">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="FK Name" DisplayMemberBinding="{Binding ForeignKeyName}" Width="120"/>
-                                <GridViewColumn Header="Column" DisplayMemberBinding="{Binding ColumnName}" Width="100"/>
-                                <GridViewColumn Header="Ref Table" DisplayMemberBinding="{Binding ReferencedTable}" Width="100"/>
-                                <GridViewColumn Header="Ref Column" DisplayMemberBinding="{Binding ReferencedColumn}" Width="100"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </GroupBox>
-            </Grid>
-        </GroupBox>
-
-        <!-- Tabs for Procedures -->
-        <TabControl Grid.Row="3" Margin="0,0,0,10">
-            <TabItem Header="GetAll">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Header="Select Attributes" Grid.Row="0" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding Columns}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <GroupBox Header="Select Foreign Keys" Grid.Row="1" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding ForeignKeys}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="FK Name" DisplayMemberBinding="{Binding ForeignKeyName}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <Button Content="Generate GetAll" Command="{Binding GenerateGetAllCommand}" Grid.Row="2" Padding="10,5" HorizontalAlignment="Center"/>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="GetByAttributes">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Header="Select Attributes for Filtering" Grid.Row="0" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding Columns}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <GroupBox Header="Select Foreign Keys" Grid.Row="1" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding ForeignKeys}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="FK Name" DisplayMemberBinding="{Binding ForeignKeyName}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <Button Content="Generate GetByAttributes" Command="{Binding GenerateGetByAttributesCommand}" Grid.Row="2" Padding="10,5" HorizontalAlignment="Center"/>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Delete">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Header="Select Attributes" Grid.Row="0" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding Columns}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <GroupBox Header="Select Foreign Keys" Grid.Row="1" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding ForeignKeys}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="FK Name" DisplayMemberBinding="{Binding ForeignKeyName}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <Button Content="Generate Delete" Command="{Binding GenerateDeleteCommand}" Grid.Row="2" Padding="10,5" HorizontalAlignment="Center"/>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Save">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Header="Select Attributes" Grid.Row="0" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding Columns}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <GroupBox Header="Select Foreign Keys" Grid.Row="1" Margin="0,0,0,10">
-                            <ListView ItemsSource="{Binding ForeignKeys}" Height="100">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="50">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="FK Name" DisplayMemberBinding="{Binding ForeignKeyName}" Width="120"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </GroupBox>
-                        <Button Content="Generate Save" Command="{Binding GenerateSaveCommand}" Grid.Row="2" Padding="10,5" HorizontalAlignment="Center"/>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-        </TabControl>
-
-        <!-- Generated SQL -->
-        <GroupBox Header="Generated SQL" Grid.Row="4">
-            <TextBox Text="{Binding GeneratedSql}" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12"/>
-        </GroupBox>
-    </Grid>
+    </ScrollViewer>
 </Window>

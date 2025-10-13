@@ -3,39 +3,173 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GAG_Proc_Generator.Views"
         mc:Ignorable="d"
-        Title="Connect to SQL Server" Height="400" Width="500" WindowStartupLocation="CenterScreen">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        Title="Connect to SQL Server" Height="650" Width="600"
+        MinHeight="650" MinWidth="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5"
+        ResizeMode="CanResize">
 
-        <!-- Server -->
-        <TextBlock Text="Server:" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
-        <TextBox Text="{Binding Server}" Grid.Row="0" Margin="60,0,0,5"/>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-        <!-- Database -->
-        <TextBlock Text="Database:" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,10,5"/>
-        <ComboBox ItemsSource="{Binding Databases}" SelectedItem="{Binding SelectedDatabase}" Grid.Row="1" Margin="60,0,0,5" IsEnabled="{Binding IsConnected}"/>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
 
-        <!-- Procedures -->
-        <TextBlock Text="Existing Procedures:" Grid.Row="2" VerticalAlignment="Top" Margin="0,10,0,5"/>
-        <ListBox ItemsSource="{Binding Procedures}" Grid.Row="2" Margin="0,30,0,10" Height="80" IsEnabled="{Binding IsConnected}"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
 
-        <!-- Status -->
-        <TextBlock Text="{Binding Status}" Grid.Row="3" Margin="0,10,0,10" FontWeight="Bold"/>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        </Style>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Test Connection" Command="{Binding TestConnectionCommand}" Padding="10,5" Margin="0,0,10,0"/>
-            <Button Content="Connect" Command="{Binding ConnectCommand}" Padding="10,5" Margin="0,0,10,0"/>
-            <Button Content="OK" Command="{Binding OkCommand}" Padding="10,5" Margin="0,0,10,0" IsEnabled="{Binding IsConnected}"/>
-            <Button Content="Cancel" Command="{Binding CancelCommand}" Padding="10,5"/>
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#CCCCCC"/>
+                    <Setter Property="Foreground" Value="#999999"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ListBox">
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Margin="20">
+        <!-- Buttons docked at bottom -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Content="→ Next"
+                    Command="{Binding OkCommand}"
+                    IsEnabled="{Binding IsConnected}"
+                    Background="#4CAF50"
+                    MinWidth="100"
+                    FontSize="14"/>
+            <Button Content="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Background="#666666"
+                    MinWidth="80"/>
         </StackPanel>
-    </Grid>
+
+        <!-- Scrollable content -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <GroupBox Header="Server Connection">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Server:" Grid.Row="0" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Row="0"
+                         Grid.Column="1"
+                         ToolTip="Enter SQL Server address (e.g., localhost or server.database.windows.net)"/>
+
+                <Button Grid.Row="1" Grid.Column="1"
+                        Content="Connect"
+                        Command="{Binding ConnectCommand}"
+                        MinWidth="100"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Left"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Database Selection" Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Database:" FontWeight="SemiBold"/>
+                <ComboBox ItemsSource="{Binding Databases}"
+                          SelectedItem="{Binding SelectedDatabase}"
+                          Grid.Column="1"
+                          ToolTip="Select database to work with"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Existing Procedures" Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ListBox ItemsSource="{Binding Procedures}"
+                     Height="150"
+                     ToolTip="Stored procedures in selected database"/>
+        </GroupBox>
+
+        <GroupBox>
+            <GroupBox.Header>
+                <TextBlock Text="Connection Status" FontWeight="SemiBold"/>
+            </GroupBox.Header>
+            <StackPanel>
+                <TextBlock Text="{Binding Status}"
+                           FontWeight="Bold"
+                           TextWrapping="Wrap"
+                           Foreground="#666666"/>
+                <TextBlock Text="✓ Ready to proceed"
+                           Foreground="#4CAF50"
+                           FontWeight="Bold"
+                           Margin="0,10,0,0"
+                           FontSize="14"
+                           Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </StackPanel>
+        </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

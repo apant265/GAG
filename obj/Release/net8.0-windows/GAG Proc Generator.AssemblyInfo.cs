@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GAG Proc Generator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2079587851df47a315b94808d22a3f0606abf04d")]
 [assembly: System.Reflection.AssemblyProductAttribute("GAG Proc Generator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GAG Proc Generator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
