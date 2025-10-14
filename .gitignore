@@ -16,6 +16,7 @@ bld/
 # Visual Studio cache/options
 .vs/
 .vscode/
+.vs
 
 # User-specific files
 *.rsuser
@@ -100,6 +101,7 @@ _ReSharper*/
 *.pidb
 *.svclog
 *.scc
+bin
 
 # Backup & report files
 _UpgradeReport_Files/
