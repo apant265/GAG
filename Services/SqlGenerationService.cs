@@ -38,17 +38,7 @@ public class SqlGenerationService
             fromClause += "\n" + string.Join("\n", joinClauses);
         }
 
-        var header = BuildProcedureHeader(
-            "GetAll",
-            $"{tableName}{DatabaseConstants.GetAllProcedureSuffix}",
-            $"Get all {tableName} records",
-            database,
-            application,
-            initials,
-            storyNumber,
-            description,
-            null);
-
+        var header = BuildProcedureHeader("GetAll", $"{tableName}{DatabaseConstants.GetAllProcedureSuffix}", $"Get all {tableName} records", database, application, initials, storyNumber, description, null);
         return $"USE [{database}];\nGO\n\nCREATE OR ALTER PROCEDURE [{database}].[{DatabaseConstants.ProcedurePrefix}{tableName}{DatabaseConstants.GetAllProcedureSuffix}]\nAS\n{header}\nBEGIN\n    SELECT\n        {selectList}\n    FROM {fromClause}\nEND\nGO";
     }
 
