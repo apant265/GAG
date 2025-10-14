@@ -117,16 +117,7 @@ public class SqlGenerationService
         var updateSet = string.Join(",\n        ", selectedCols.Select(c => $"[{c.Name}] = @{c.Name}"));
         var wherePk = string.Join(" AND ", pkCols.Select(c => $"[{c.Name}] = @{c.Name}"));
 
-        var header = BuildProcedureHeader(
-            "Save",
-            $"{tableName}{DatabaseConstants.SaveProcedureSuffix}",
-            $"Save a {tableName} record",
-            database,
-            application,
-            initials,
-            storyNumber,
-            description,
-            selectedCols);
+        var header = BuildProcedureHeader( "Save", $"{tableName}{DatabaseConstants.SaveProcedureSuffix}", $"Save a {tableName} record", database, application, initials, storyNumber, description, selectedCols);
 
         if (pkCols.Any())
         {
