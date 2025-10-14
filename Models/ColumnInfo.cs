@@ -11,10 +11,16 @@ public partial class ColumnInfo : ObservableObject
     private string dataType = string.Empty;
 
     [ObservableProperty]
+    private int? maxLength;
+
+    [ObservableProperty]
     private bool isNullable;
 
     [ObservableProperty]
     private bool isPrimaryKey;
+
+    [ObservableProperty]
+    private bool isIdentity;
 
     [ObservableProperty]
     private bool isSelected;

@@ -10,6 +10,7 @@ public static class DatabaseConstants
     public const string GetByAttributesProcedureSuffix = "_GetByAttributes";
     public const string DeleteProcedureSuffix = "_Delete";
     public const string SaveProcedureSuffix = "_Save";
+    public const string InsertProcedureSuffix = "_Insert";
 
     public const string ProcedurePrefix = "usp";
     public const string SqlFileExtension = ".sql";
@@ -37,9 +38,6 @@ public static class SqlQueries
 
     public const string GetDatabases =
         "SELECT name FROM sys.databases WHERE database_id > 4 ORDER BY name";
-
-    public const string GetProcedures =
-        "SELECT name FROM sys.procedures ORDER BY name";
 }
 
 public static class MessageStrings

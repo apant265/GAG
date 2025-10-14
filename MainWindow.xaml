@@ -90,49 +90,70 @@
             </GroupBox>
 
             <GroupBox Header="📊 Table Schema" Visibility="{Binding IsTableLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <GroupBox Header="Columns" Margin="0,0,5,0">
-                        <ListView ItemsSource="{Binding Columns}" Height="200">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Select" Width="60">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
-                                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding DataType}" Width="100"/>
-                                    <GridViewColumn Header="PK" DisplayMemberBinding="{Binding IsPrimaryKey}" Width="40"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </GroupBox>
+                        <GroupBox Header="Columns" Margin="0,0,5,0">
+                            <ListView ItemsSource="{Binding Columns}" Height="200">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Select" Width="60">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
+                                        <GridViewColumn Header="Type" DisplayMemberBinding="{Binding DataType}" Width="100"/>
+                                        <GridViewColumn Header="PK" DisplayMemberBinding="{Binding IsPrimaryKey}" Width="40"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </GroupBox>
 
-                    <GroupBox Header="Foreign Keys" Grid.Column="1" Margin="5,0,0,0">
-                        <ListView ItemsSource="{Binding ForeignKeys}" Height="200">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Select" Width="60">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Column" DisplayMemberBinding="{Binding ColumnName}" Width="100"/>
-                                    <GridViewColumn Header="References" DisplayMemberBinding="{Binding ReferencedTable}" Width="120"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
+                        <GroupBox Header="Foreign Keys" Grid.Column="1" Margin="5,0,0,0">
+                            <ListView ItemsSource="{Binding ForeignKeys}" Height="200">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Select" Width="60">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Column" DisplayMemberBinding="{Binding ColumnName}" Width="100"/>
+                                        <GridViewColumn Header="References" DisplayMemberBinding="{Binding ReferencedTable}" Width="120"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </GroupBox>
+                    </Grid>
+
+                    <GroupBox Header="Additional Joins for GET Procedures" Margin="0,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Add custom table joins beyond foreign keys to include in GET procedures."
+                                       TextWrapping="Wrap"
+                                       Margin="0,0,0,10"
+                                       Foreground="#666"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Configure Joins"
+                                        Command="{Binding ConfigureJoinsCommand}"
+                                        HorizontalAlignment="Left"/>
+                                <TextBlock Text="{Binding AdditionalJoins.Count, StringFormat='({0} joins configured)'}"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"
+                                           FontWeight="SemiBold"
+                                           Foreground="#2196F3"/>
+                            </StackPanel>
+                        </StackPanel>
                     </GroupBox>
-                </Grid>
+                </StackPanel>
             </GroupBox>
 
             <GroupBox Header="📝 Header Information" Visibility="{Binding IsTableLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -164,6 +185,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                         <Button Content="GetAll" Command="{Binding GenerateGetAllCommand}"/>
                         <Button Content="Save" Command="{Binding GenerateSaveCommand}"/>
+                        <Button Content="Insert" Command="{Binding GenerateInsertCommand}"/>
                         <Button Content="Delete" Command="{Binding GenerateDeleteCommand}"/>
                     </StackPanel>
 

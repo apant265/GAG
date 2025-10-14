@@ -1,0 +1,170 @@
+<Window x:Class="GAG_Proc_Generator.Views.JoinConfigurationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Configure Table Joins" Height="600" Width="900"
+        WindowStartupLocation="CenterOwner"
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#CCCCCC"/>
+                    <Setter Property="Foreground" Value="#999999"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Margin="20">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="OK" Width="100" Click="OkButton_Click"/>
+            <Button Content="Cancel" Width="100" Click="CancelButton_Click" Background="#757575"/>
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <GroupBox Header="Add New Join">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Join Type:" Grid.Row="0"/>
+                        <ComboBox ItemsSource="{Binding JoinTypes}"
+                                  SelectedItem="{Binding SelectedJoinType}"
+                                  Grid.Row="0" Grid.Column="1"/>
+
+                        <Label Content="Table to Join:" Grid.Row="1"/>
+                        <ComboBox ItemsSource="{Binding AvailableTables}"
+                                  SelectedItem="{Binding SelectedJoinTable}"
+                                  Grid.Row="1" Grid.Column="1"/>
+
+                        <Label Content="Join On Column:" Grid.Row="2"/>
+                        <ComboBox ItemsSource="{Binding SelectedTableColumns}"
+                                  SelectedValue="{Binding SelectedJoinColumn}"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Name"
+                                  Grid.Row="2" Grid.Column="1"/>
+
+                        <Label Content="Base Table Column:" Grid.Row="3"/>
+                        <ComboBox ItemsSource="{Binding BaseTableColumns}"
+                                  SelectedValue="{Binding SelectedBaseColumn}"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Name"
+                                  Grid.Row="3" Grid.Column="1"/>
+
+                        <Button Content="Add Join"
+                                Command="{Binding AddJoinCommand}"
+                                Grid.Row="4" Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                Margin="0,10,0,0"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Configured Joins">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top"
+                                   Text="These joins will be added to your GET procedures. Use the buttons to reorder or remove joins."
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,10"
+                                   Foreground="#666"/>
+
+                        <ListView ItemsSource="{Binding ConfiguredJoins}" Height="250">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Select" Width="60">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Join Type" DisplayMemberBinding="{Binding JoinType}" Width="120"/>
+                                    <GridViewColumn Header="Table" DisplayMemberBinding="{Binding JoinTable}" Width="120"/>
+                                    <GridViewColumn Header="Join Column" DisplayMemberBinding="{Binding JoinColumn}" Width="120"/>
+                                    <GridViewColumn Header="Base Column" DisplayMemberBinding="{Binding BaseTableColumn}" Width="120"/>
+                                    <GridViewColumn Header="Actions" Width="180">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Content="↑"
+                                                            Command="{Binding DataContext.MoveJoinUpCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                            CommandParameter="{Binding}"
+                                                            Width="30" Height="25"
+                                                            Padding="0" Margin="2,0"/>
+                                                    <Button Content="↓"
+                                                            Command="{Binding DataContext.MoveJoinDownCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                            CommandParameter="{Binding}"
+                                                            Width="30" Height="25"
+                                                            Padding="0" Margin="2,0"/>
+                                                    <Button Content="Remove"
+                                                            Command="{Binding DataContext.RemoveJoinCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                            CommandParameter="{Binding}"
+                                                            Background="#F44336"
+                                                            Width="70" Height="25"
+                                                            Padding="0" Margin="2,0"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </DockPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

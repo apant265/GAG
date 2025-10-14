@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Connect to SQL Server" Height="650" Width="600"
-        MinHeight="650" MinWidth="600"
+        Title="Connect to SQL Server" Height="450" Width="600"
+        MinHeight="450" MinWidth="600"
         WindowStartupLocation="CenterScreen"
         Background="#F5F5F5"
         ResizeMode="CanResize">
@@ -144,12 +144,6 @@
                           Grid.Column="1"
                           ToolTip="Select database to work with"/>
             </Grid>
-        </GroupBox>
-
-        <GroupBox Header="Existing Procedures" Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <ListBox ItemsSource="{Binding Procedures}"
-                     Height="150"
-                     ToolTip="Stored procedures in selected database"/>
         </GroupBox>
 
         <GroupBox>

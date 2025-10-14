@@ -43,24 +43,6 @@ public class DatabaseService
         return databases;
     }
 
-    public async Task<List<string>> GetProceduresAsync(string connectionString)
-    {
-        var procedures = new List<string>();
-
-        await using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync();
-
-        await using var command = new SqlCommand(SqlQueries.GetProcedures, connection);
-        await using var reader = await command.ExecuteReaderAsync();
-
-        while (await reader.ReadAsync())
-        {
-            procedures.Add(reader.GetString(0));
-        }
-
-        return procedures;
-    }
-
     public async Task<List<ColumnInfo>> GetColumnsAsync(string connectionString, string tableName)
     {
         var columns = new List<ColumnInfo>();
@@ -68,17 +50,34 @@ public class DatabaseService
         await using var connection = new SqlConnection(connectionString);
         await connection.OpenAsync();
 
-        var schema = await Task.Run(() => connection.GetSchema("Columns", new[] { null, null, tableName }));
         var primaryKeys = await GetPrimaryKeysAsync(connection, tableName);
 
-        foreach (DataRow row in schema.Rows)
+        var query = @"
+            SELECT
+                c.COLUMN_NAME,
+                c.DATA_TYPE,
+                c.IS_NULLABLE,
+                c.CHARACTER_MAXIMUM_LENGTH,
+                COLUMNPROPERTY(OBJECT_ID(c.TABLE_SCHEMA + '.' + c.TABLE_NAME), c.COLUMN_NAME, 'IsIdentity') AS IS_IDENTITY
+            FROM INFORMATION_SCHEMA.COLUMNS c
+            WHERE c.TABLE_NAME = @TableName
+            ORDER BY c.ORDINAL_POSITION";
+
+        await using var command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@TableName", tableName);
+        await using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
         {
+            var columnName = reader.GetString(0);
             var column = new ColumnInfo
             {
-                Name = row["COLUMN_NAME"].ToString()!,
-                DataType = row["DATA_TYPE"].ToString()!,
-                IsNullable = row["IS_NULLABLE"].ToString() == "YES",
-                IsPrimaryKey = primaryKeys.Contains(row["COLUMN_NAME"].ToString()!)
+                Name = columnName,
+                DataType = reader.GetString(1),
+                IsNullable = reader.GetString(2) == "YES",
+                MaxLength = reader.IsDBNull(3) ? null : reader.GetInt32(3),
+                IsIdentity = reader.GetInt32(4) == 1,
+                IsPrimaryKey = primaryKeys.Contains(columnName)
             };
             columns.Add(column);
         }

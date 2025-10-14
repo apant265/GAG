@@ -29,6 +29,9 @@ public partial class MainViewModel : ObservableObject
     private ObservableCollection<ForeignKeyInfo> foreignKeys = new();
 
     [ObservableProperty]
+    private ObservableCollection<TableJoinInfo> additionalJoins = new();
+
+    [ObservableProperty]
     private string generatedSql = string.Empty;
 
     [ObservableProperty]
@@ -79,6 +82,51 @@ public partial class MainViewModel : ObservableObject
         IsHeaderInfoComplete = !string.IsNullOrWhiteSpace(Initials) &&
                                !string.IsNullOrWhiteSpace(StoryNumber) &&
                                !string.IsNullOrWhiteSpace(Description);
+    }
+
+    [RelayCommand]
+    private async Task ConfigureJoinsAsync()
+    {
+        if (!IsTableLoaded)
+        {
+            MessageBox.Show(
+                "Please load a table first.",
+                MessageStrings.TitleWarning,
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        try
+        {
+            var dialog = new Views.JoinConfigurationDialog
+            {
+                Owner = System.Windows.Application.Current.MainWindow
+            };
+
+            await dialog.ViewModel.InitializeAsync(
+                ConnectionString,
+                TableName,
+                Columns,
+                AdditionalJoins);
+
+            if (dialog.ShowDialog() == true)
+            {
+                AdditionalJoins.Clear();
+                foreach (var join in dialog.ViewModel.ConfiguredJoins)
+                {
+                    AdditionalJoins.Add(join);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Error configuring joins: {ex.Message}",
+                MessageStrings.TitleError,
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
     }
 
     [RelayCommand]
@@ -136,6 +184,7 @@ public partial class MainViewModel : ObservableObject
             Database,
             Columns,
             ForeignKeys.Where(fk => fk.IsSelected),
+            AdditionalJoins,
             Initials,
             StoryNumber,
             Description,
@@ -165,6 +214,7 @@ public partial class MainViewModel : ObservableObject
             Columns,
             selectedCols,
             ForeignKeys.Where(fk => fk.IsSelected),
+            AdditionalJoins,
             Initials,
             StoryNumber,
             Description,
@@ -173,7 +223,8 @@ public partial class MainViewModel : ObservableObject
         if (!string.IsNullOrEmpty(sql))
         {
             GeneratedSql = sql;
-            SaveToFile($"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.GetByAttributesProcedureSuffix}{DatabaseConstants.SqlFileExtension}", sql);
+            var procedureSuffix = selectedCols.Count == 1 ? $"_GetBy{selectedCols[0].Name}" : DatabaseConstants.GetByAttributesProcedureSuffix;
+            SaveToFile($"{DatabaseConstants.ProcedurePrefix}{TableName}{procedureSuffix}{DatabaseConstants.SqlFileExtension}", sql);
         }
     }
 
@@ -239,6 +290,36 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void GenerateInsert()
+    {
+        var selectedCols = Columns.Where(c => c.IsSelected).ToList();
+        if (!selectedCols.Any())
+        {
+            MessageBox.Show(
+                "Please select columns to insert.",
+                MessageStrings.TitleWarning,
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        var sql = sqlGenerationService.GenerateInsertProcedure(
+            TableName,
+            Database,
+            selectedCols,
+            Initials,
+            StoryNumber,
+            Description,
+            Application);
+
+        if (!string.IsNullOrEmpty(sql))
+        {
+            GeneratedSql = sql;
+            SaveToFile($"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.InsertProcedureSuffix}{DatabaseConstants.SqlFileExtension}", sql);
+        }
+    }
+
+    [RelayCommand]
     private void GenerateAllProcs()
     {
         using var dialog = new FolderBrowserDialog
@@ -255,13 +336,18 @@ public partial class MainViewModel : ObservableObject
 
         var getAllSql = sqlGenerationService.GenerateGetAllProcedure(
             TableName, Database, Columns, ForeignKeys.Where(fk => fk.IsSelected),
-            Initials, StoryNumber, Description, Application);
+            AdditionalJoins, Initials, StoryNumber, Description, Application);
         File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.GetAllProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), getAllSql);
 
         var getBySql = sqlGenerationService.GenerateGetByAttributesProcedure(
             TableName, Database, Columns, Columns.Where(c => c.IsSelected),
-            ForeignKeys.Where(fk => fk.IsSelected), Initials, StoryNumber, Description, Application);
+            ForeignKeys.Where(fk => fk.IsSelected), AdditionalJoins, Initials, StoryNumber, Description, Application);
         File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.GetByAttributesProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), getBySql);
+
+        var insertSql = sqlGenerationService.GenerateInsertProcedure(
+            TableName, Database, Columns.Where(c => c.IsSelected),
+            Initials, StoryNumber, Description, Application);
+        File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.InsertProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), insertSql);
 
         var deleteSql = sqlGenerationService.GenerateDeleteProcedure(
             TableName, Database, Columns.Where(c => c.IsSelected),

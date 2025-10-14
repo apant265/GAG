@@ -37,9 +37,6 @@ public partial class DatabaseConnectionViewModel : ObservableObject
     private string selectedDatabase = string.Empty;
 
     [ObservableProperty]
-    private ObservableCollection<string> procedures = new();
-
-    [ObservableProperty]
     private bool isConnected;
 
     [ObservableProperty]
@@ -50,14 +47,6 @@ public partial class DatabaseConnectionViewModel : ObservableObject
     public DatabaseConnectionViewModel()
     {
         databaseService = new DatabaseService();
-    }
-
-    partial void OnSelectedDatabaseChanged(string value)
-    {
-        if (IsConnected && !string.IsNullOrEmpty(value))
-        {
-            _ = LoadProceduresAsync();
-        }
     }
 
     [RelayCommand]
@@ -87,36 +76,6 @@ public partial class DatabaseConnectionViewModel : ObservableObject
             Status = $"Connection failed: {ex.Message}";
             MessageBox.Show(
                 $"Connection failed: {ex.Message}",
-                MessageStrings.TitleError,
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-    }
-
-    private async Task LoadProceduresAsync()
-    {
-        if (!IsConnected || string.IsNullOrEmpty(SelectedDatabase))
-            return;
-
-        try
-        {
-            var connectionString = BuildConnectionString();
-            var procedures = await databaseService.GetProceduresAsync(connectionString);
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                Procedures.Clear();
-
-                foreach (var proc in procedures)
-                {
-                    Procedures.Add(proc);
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                $"Failed to load procedures: {ex.Message}",
                 MessageStrings.TitleError,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
