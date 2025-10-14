@@ -6,7 +6,7 @@ namespace GAG_Proc_Generator.Services;
 
 public class SqlGenerationService
 {
-    public string GenerateGetAllProcedure( string tableName, string database, IEnumerable<ColumnInfo> columns, IEnumerable<ForeignKeyInfo> selectedForeignKeys, string initials, string storyNumber, string description, string application)
+    public string GenerateGetAllProcedure(string tableName, string database, IEnumerable<ColumnInfo> columns, IEnumerable<ForeignKeyInfo> selectedForeignKeys, string initials, string storyNumber, string description, string application)
     {
         var tableAlias = GetTableAlias(tableName);
         var selectList = string.Join(",\n        ", columns.Select(c => $"{tableAlias}.{c.Name}"));
@@ -52,7 +52,7 @@ public class SqlGenerationService
         return $"USE [{database}];\nGO\n\nCREATE OR ALTER PROCEDURE [{database}].[{DatabaseConstants.ProcedurePrefix}{tableName}{DatabaseConstants.GetAllProcedureSuffix}]\nAS\n{header}\nBEGIN\n    SELECT\n        {selectList}\n    FROM {fromClause}\nEND\nGO";
     }
 
-    public string GenerateGetByAttributesProcedure( string tableName, string database, IEnumerable<ColumnInfo> allColumns, IEnumerable<ColumnInfo> selectedColumns, IEnumerable<ForeignKeyInfo> selectedForeignKeys, string initials, string storyNumber, string description, string application)
+    public string GenerateGetByAttributesProcedure(string tableName, string database, IEnumerable<ColumnInfo> allColumns, IEnumerable<ColumnInfo> selectedColumns, IEnumerable<ForeignKeyInfo> selectedForeignKeys, string initials, string storyNumber, string description, string application)
     {
         var selectedCols = selectedColumns.ToList();
         if (!selectedCols.Any())
@@ -97,7 +97,7 @@ public class SqlGenerationService
         return $"USE [{database}];\nGO\n\nCREATE OR ALTER PROCEDURE [{database}].[{DatabaseConstants.ProcedurePrefix}{tableName}{DatabaseConstants.GetByAttributesProcedureSuffix}]\n    {paramDeclarations}\nAS\n{header}\nBEGIN\n    SELECT\n        {selectList}\n    FROM {fromClause}\n    WHERE {whereClause}\nEND\nGO";
     }
 
-    public string GenerateDeleteProcedure( string tableName, string database, IEnumerable<ColumnInfo> selectedColumns, string initials, string storyNumber, string description, string application)
+    public string GenerateDeleteProcedure(string tableName, string database, IEnumerable<ColumnInfo> selectedColumns, string initials, string storyNumber, string description, string application)
     {
         var selectedCols = selectedColumns.ToList();
         if (!selectedCols.Any())
@@ -112,7 +112,7 @@ public class SqlGenerationService
         return $"USE [{database}];\nGO\n\nCREATE OR ALTER PROCEDURE [{database}].[{DatabaseConstants.ProcedurePrefix}{tableName}{DatabaseConstants.DeleteProcedureSuffix}]\n    {paramDeclarations}\nAS\n{header}\nBEGIN\n    DELETE FROM [{database}].[{tableName}]\n    WHERE {whereClause}\nEND\nGO";
     }
 
-    public string GenerateSaveProcedure( string tableName, string database, IEnumerable<ColumnInfo> allColumns, IEnumerable<ColumnInfo> selectedColumns, string initials, string storyNumber, string description, string application)
+    public string GenerateSaveProcedure(string tableName, string database, IEnumerable<ColumnInfo> allColumns, IEnumerable<ColumnInfo> selectedColumns, string initials, string storyNumber, string description, string application)
     {
         var selectedCols = selectedColumns.ToList();
         if (!selectedCols.Any())
@@ -146,7 +146,7 @@ public class SqlGenerationService
         return $"USE [{database}];\nGO\n\nCREATE OR ALTER PROCEDURE [{database}].[{DatabaseConstants.ProcedurePrefix}{tableName}{DatabaseConstants.SaveProcedureSuffix}]\n    {paramDeclarations}\nAS\n{header}\nBEGIN\n    INSERT INTO [{database}].[{tableName}] ({insertColumns})\n    VALUES ({insertValues})\nEND\nGO";
     }
 
-    private string BuildProcedureHeader( string procedureType, string procedureName, string description, string database, string application, string initials, string storyNumber, string headerDescription, List<ColumnInfo>? paramColumns)
+    private string BuildProcedureHeader(string procedureType, string procedureName, string description, string database, string application, string initials, string storyNumber, string headerDescription, List<ColumnInfo>? paramColumns)
     {
         var fullProcedureName = $"{database}.{DatabaseConstants.ProcedurePrefix}{procedureName}";
         var testString = new StringBuilder();
