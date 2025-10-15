@@ -67,10 +67,49 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private bool isHeaderInfoComplete;
 
+    [ObservableProperty]
+    private string selectedProcType = string.Empty;
+
+    [ObservableProperty]
+    private bool showSchemaSelection;
+
+    public ObservableCollection<string> ProcTypes { get; } = new()
+    {
+        "Get",
+        "Save",
+        "Insert",
+        "Update",
+        "Delete",
+        "GetByAttributes"
+    };
+
     public MainViewModel()
     {
         databaseService = new DatabaseService();
         sqlGenerationService = new SqlGenerationService();
+    }
+
+    partial void OnSelectedProcTypeChanged(string value)
+    {
+        // Show schema selection for all except "Get"
+        ShowSchemaSelection = !string.IsNullOrEmpty(value) && value != "Get";
+
+        // For Save, auto-select all columns
+        if (value == "Save")
+        {
+            foreach (var column in Columns)
+            {
+                column.IsSelected = true;
+            }
+        }
+
+        // Notify that CanExecute state has changed
+        GenerateSelectedProcCommand.NotifyCanExecuteChanged();
+    }
+
+    private bool CanGenerateProc()
+    {
+        return !string.IsNullOrEmpty(SelectedProcType);
     }
 
     partial void OnInitialsChanged(string value) => UpdateHeaderInfoComplete();
@@ -130,6 +169,23 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void SelectAllColumns()
+    {
+        foreach (var column in Columns)
+        {
+            column.IsSelected = true;
+        }
+    }
+
+    private void ResetColumnSelections()
+    {
+        foreach (var column in Columns)
+        {
+            column.IsSelected = false;
+        }
+    }
+
+    [RelayCommand]
     private async Task LoadTableAsync()
     {
         if (string.IsNullOrWhiteSpace(TableName) || string.IsNullOrEmpty(ConnectionString))
@@ -145,6 +201,8 @@ public partial class MainViewModel : ObservableObject
         Columns.Clear();
         ForeignKeys.Clear();
         IsTableLoaded = false;
+        SelectedProcType = string.Empty;
+        ShowSchemaSelection = false;
 
         try
         {
@@ -176,8 +234,36 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
-    private void GenerateGetAll()
+    [RelayCommand(CanExecute = nameof(CanGenerateProc))]
+    private void GenerateSelectedProc()
+    {
+        switch (SelectedProcType)
+        {
+            case "Get":
+                GenerateGet();
+                break;
+            case "Save":
+                GenerateSave();
+                break;
+            case "Insert":
+                GenerateInsert();
+                break;
+            case "Update":
+                GenerateUpdate();
+                break;
+            case "Delete":
+                GenerateDelete();
+                break;
+            case "GetByAttributes":
+                GenerateGetByAttributes();
+                break;
+        }
+
+        // Reset checkboxes after generation
+        ResetColumnSelections();
+    }
+
+    private void GenerateGet()
     {
         var sql = sqlGenerationService.GenerateGetAllProcedure(
             TableName,
@@ -191,10 +277,9 @@ public partial class MainViewModel : ObservableObject
             Application);
 
         GeneratedSql = sql;
-        SaveToFile($"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.GetAllProcedureSuffix}{DatabaseConstants.SqlFileExtension}", sql);
+        SaveToFile($"{DatabaseConstants.ProcedurePrefix}{TableName}_Get{DatabaseConstants.SqlFileExtension}", sql);
     }
 
-    [RelayCommand]
     private void GenerateGetByAttributes()
     {
         var selectedCols = Columns.Where(c => c.IsSelected).ToList();
@@ -228,7 +313,6 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
     private void GenerateDelete()
     {
         var selectedCols = Columns.Where(c => c.IsSelected).ToList();
@@ -258,7 +342,6 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
     private void GenerateSave()
     {
         var selectedCols = Columns.Where(c => c.IsSelected).ToList();
@@ -289,7 +372,6 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
     private void GenerateInsert()
     {
         var selectedCols = Columns.Where(c => c.IsSelected).ToList();
@@ -319,51 +401,34 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
-    private void GenerateAllProcs()
+    private void GenerateUpdate()
     {
-        using var dialog = new FolderBrowserDialog
+        var selectedCols = Columns.Where(c => c.IsSelected).ToList();
+        if (!selectedCols.Any())
         {
-            Description = "Select folder for generated procedures",
-            SelectedPath = OutputFolder
-        };
+            MessageBox.Show(
+                "Please select columns to update.",
+                MessageStrings.TitleWarning,
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
 
-        if (dialog.ShowDialog() != DialogResult.OK) return;
+        var sql = sqlGenerationService.GenerateUpdateProcedure(
+            TableName,
+            Database,
+            Columns,
+            selectedCols,
+            Initials,
+            StoryNumber,
+            Description,
+            Application);
 
-        OutputFolder = dialog.SelectedPath;
-        var dir = Path.Combine(OutputFolder, TableName);
-        Directory.CreateDirectory(dir);
-
-        var getAllSql = sqlGenerationService.GenerateGetAllProcedure(
-            TableName, Database, Columns, ForeignKeys.Where(fk => fk.IsSelected),
-            AdditionalJoins, Initials, StoryNumber, Description, Application);
-        File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.GetAllProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), getAllSql);
-
-        var getBySql = sqlGenerationService.GenerateGetByAttributesProcedure(
-            TableName, Database, Columns, Columns.Where(c => c.IsSelected),
-            ForeignKeys.Where(fk => fk.IsSelected), AdditionalJoins, Initials, StoryNumber, Description, Application);
-        File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.GetByAttributesProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), getBySql);
-
-        var insertSql = sqlGenerationService.GenerateInsertProcedure(
-            TableName, Database, Columns.Where(c => c.IsSelected),
-            Initials, StoryNumber, Description, Application);
-        File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.InsertProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), insertSql);
-
-        var deleteSql = sqlGenerationService.GenerateDeleteProcedure(
-            TableName, Database, Columns.Where(c => c.IsSelected),
-            Initials, StoryNumber, Description, Application);
-        File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.DeleteProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), deleteSql);
-
-        var saveSql = sqlGenerationService.GenerateSaveProcedure(
-            TableName, Database, Columns, Columns.Where(c => c.IsSelected),
-            Initials, StoryNumber, Description, Application);
-        File.WriteAllText(Path.Combine(dir, $"{DatabaseConstants.ProcedurePrefix}{TableName}{DatabaseConstants.SaveProcedureSuffix}{DatabaseConstants.SqlFileExtension}"), saveSql);
-
-        MessageBox.Show(
-            MessageStrings.AllProcsGenerated,
-            MessageStrings.TitleSuccess,
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        if (!string.IsNullOrEmpty(sql))
+        {
+            GeneratedSql = sql;
+            SaveToFile($"{DatabaseConstants.ProcedurePrefix}{TableName}_Update{DatabaseConstants.SqlFileExtension}", sql);
+        }
     }
 
     private void SaveToFile(string fileName, string sql)

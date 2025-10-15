@@ -1,4 +1,3 @@
-using System.Data;
 using GAG_Proc_Generator.Constants;
 using GAG_Proc_Generator.Models;
 using Microsoft.Data.SqlClient;

@@ -92,10 +92,7 @@ public partial class JoinConfigurationViewModel : ObservableObject
                 AvailableTables.Add(table);
             }
         }
-        catch
-        {
-            // Handle error silently or log
-        }
+        catch {}
     }
 
     private async Task LoadSelectedTableColumnsAsync()
@@ -109,10 +106,7 @@ public partial class JoinConfigurationViewModel : ObservableObject
                 SelectedTableColumns.Add(column);
             }
         }
-        catch
-        {
-            // Handle error silently or log
-        }
+        catch {}
     }
 
     [RelayCommand]
@@ -131,7 +125,8 @@ public partial class JoinConfigurationViewModel : ObservableObject
             JoinColumn = SelectedJoinColumn,
             BaseTableColumn = SelectedBaseColumn,
             JoinType = SelectedJoinType,
-            IsSelected = true
+            IsSelected = true,
+            JoinTableColumns = SelectedTableColumns.ToList()
         };
 
         ConfiguredJoins.Add(newJoin);

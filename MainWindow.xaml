@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:GAG_Proc_Generator.Converters"
         mc:Ignorable="d"
         Title="SQL Stored Procedure Generator" Height="750" Width="1000"
         WindowStartupLocation="CenterScreen"
@@ -11,7 +10,6 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
 
         <Style TargetType="GroupBox">
             <Setter Property="Margin" Value="0,0,0,15"/>
@@ -89,7 +87,18 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="📊 Table Schema" Visibility="{Binding IsTableLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <GroupBox Header="📋 Select Procedure Type" Visibility="{Binding IsTableLoaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel>
+                    <TextBlock Text="Select the type of stored procedure you want to generate:"
+                               Margin="0,0,0,10"
+                               FontWeight="SemiBold"/>
+                    <ComboBox ItemsSource="{Binding ProcTypes}"
+                              SelectedItem="{Binding SelectedProcType}"
+                              Margin="0,0,0,10"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="📊 Table Schema" Visibility="{Binding ShowSchemaSelection, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -98,22 +107,28 @@
                         </Grid.ColumnDefinitions>
 
                         <GroupBox Header="Columns" Margin="0,0,5,0">
-                            <ListView ItemsSource="{Binding Columns}" Height="200">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Select" Width="60">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
-                                        <GridViewColumn Header="Type" DisplayMemberBinding="{Binding DataType}" Width="100"/>
-                                        <GridViewColumn Header="PK" DisplayMemberBinding="{Binding IsPrimaryKey}" Width="40"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+                            <StackPanel>
+                                <Button Content="Select All"
+                                        Command="{Binding SelectAllColumnsCommand}"
+                                        HorizontalAlignment="Left"
+                                        Margin="0,0,0,10"/>
+                                <ListView ItemsSource="{Binding Columns}" Height="200">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Select" Width="60">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
+                                            <GridViewColumn Header="Type" DisplayMemberBinding="{Binding DataType}" Width="100"/>
+                                            <GridViewColumn Header="PK" DisplayMemberBinding="{Binding IsPrimaryKey}" Width="40"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </StackPanel>
                         </GroupBox>
 
                         <GroupBox Header="Foreign Keys" Grid.Column="1" Margin="5,0,0,0">
@@ -179,19 +194,10 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="⚙️ Generate Procedures" Visibility="{Binding IsHeaderInfoComplete, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <GroupBox Header="⚙️ Generate Procedure" Visibility="{Binding IsHeaderInfoComplete, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel>
-                    <TextBlock Text="Standard Procedures" FontWeight="Bold" Margin="0,0,0,10"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                        <Button Content="GetAll" Command="{Binding GenerateGetAllCommand}"/>
-                        <Button Content="Save" Command="{Binding GenerateSaveCommand}"/>
-                        <Button Content="Insert" Command="{Binding GenerateInsertCommand}"/>
-                        <Button Content="Delete" Command="{Binding GenerateDeleteCommand}"/>
-                    </StackPanel>
-
-                    <TextBlock Text="Custom Procedures (Select columns above first)" FontWeight="Bold" Margin="0,0,0,10"/>
-                    <Button Content="GetByAttributes"
-                            Command="{Binding GenerateGetByAttributesCommand}"
+                    <Button Content="Generate Selected Procedure"
+                            Command="{Binding GenerateSelectedProcCommand}"
                             HorizontalAlignment="Left"/>
                 </StackPanel>
             </GroupBox>

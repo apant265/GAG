@@ -6,7 +6,6 @@ public static class DatabaseConstants
     public const string DefaultDatabase = "GlobalValues";
     public const string DefaultOutputFolder = "GeneratedProcs";
 
-    public const string GetAllProcedureSuffix = "_GetAll";
     public const string GetByAttributesProcedureSuffix = "_GetByAttributes";
     public const string DeleteProcedureSuffix = "_Delete";
     public const string SaveProcedureSuffix = "_Save";
@@ -47,7 +46,6 @@ public static class MessageStrings
     public const string SelectColumnsForDeletion = "Please select columns for deletion criteria.";
     public const string SelectColumnsToSave = "Please select columns to save.";
     public const string SelectDatabase = "Please select a database.";
-    public const string AllProcsGenerated = "All procedures generated and saved.";
     public const string ConnectionTestSuccess = "Connection test successful!";
 
     public const string TitleWarning = "Warning";

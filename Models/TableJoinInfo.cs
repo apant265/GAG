@@ -19,5 +19,8 @@ public partial class TableJoinInfo : ObservableObject
     [ObservableProperty]
     private bool isSelected = true;
 
+    [ObservableProperty]
+    private List<ColumnInfo> joinTableColumns = new();
+
     public string DisplayText => $"{JoinType} {JoinTable} ON {JoinTable}.{JoinColumn} = BaseTable.{BaseTableColumn}";
 }
